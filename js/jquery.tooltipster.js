@@ -44,6 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			speed: 350,
 			timer: 0,
 			theme: 'tooltipster-default',
+			tipsterRoot: 'body',
 			touchDevices: true,
 			trigger: 'hover',
 			updateAnimation: true
@@ -316,7 +317,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						self.insertContent();
 						
 						// attach
-						self.$tooltip.appendTo('body');
+						self.$tooltip.appendTo(self.options.tipsterRoot);
 						
 						// do all the crazy calculations and positioning
 						self.positionTooltip();
