@@ -386,9 +386,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 											clearTimeout(tolerance);
 										});
 								}
-								// if this is a non-interactive tooltip, get rid of it if the mouse leaves
+								// if this is a non-interactive tooltip, get rid of it if the mouse leaves or when user clicks the hovered item
 								else {
 									self.$elProxy.on('mouseleave.'+ self.namespace + '-autoClose', function() {
+										self.hideTooltip();
+									})
+									.on('click.'+ self.namespace + '-autoClose', function() {
 										self.hideTooltip();
 									});
 								}
