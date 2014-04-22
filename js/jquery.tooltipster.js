@@ -1,6 +1,6 @@
 /*
 
-Tooltipster 3.2.0 | 2014-04-05
+Tooltipster 3.2.2 | 2014-04-07
 A rockin' custom tooltip jQuery plugin
 
 Developed by Caleb Jacob under the MIT license http://opensource.org/licenses/MIT
@@ -235,14 +235,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 					if (self.options.onlyOne) {
 						$('.tooltipstered').not(self.$el).each(function(i,el) {
 							
-							// we have to use the public methods here
 							var $el = $(el),
-								s = $el[pluginName]('status'),
-								ac = $el[pluginName]('option', 'autoClose');
+								nss = $el.data('tooltipster-ns');
 							
-							if (s !== 'hidden' && s !== 'disappearing' && ac) {
-								$el[pluginName]('hide');
-							}
+							// iterate on all tooltips of the element
+							$.each(nss, function(i, ns){
+								var instance = $el.data(ns),
+									// we have to use the public methods here
+									s = instance.status(),
+									ac = instance.option('autoClose');
+								
+								if (s !== 'hidden' && s !== 'disappearing' && ac) {
+									instance.hide();
+								}
+							});
 						});
 					}
 					
@@ -1209,7 +1215,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 					}
 					else {
 						if(multiple) go = true;
-						else throw new Error('One or more tooltips are already attached to this element, use the "multiple" option to attach more tooltips.');
+						else console.log('Tooltipster: one or more tooltips are already attached to this element: ignoring. Use the "multiple" option to attach more tooltips.');
 					}
 					
 					if(go) {
