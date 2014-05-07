@@ -1,6 +1,6 @@
 /*
 
-Tooltipster 4.0.0rc1 | 2014-04-05
+Tooltipster 3.2.3 | 2014-05-02
 A rockin' custom tooltip jQuery plugin
 
 Developed by Caleb Jacob under the MIT license http://opensource.org/licenses/MIT
@@ -21,8 +21,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			contentAsHTML: false,
 			contentCloning: true,
 			delay: 200,
-			fixedWidth: 0,
-			maxWidth: 0,
+			minWidth: 0,
+			maxWidth: null,
 			functionInit: function(origin) {},
 			functionBefore: function(origin) {},
 			functionReady: function(origin) {},
@@ -251,7 +251,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						self.Status = 'shown';
 						
 						// trigger any show method custom callbacks and reset them
-						$.each(self.callbacks.show, function(i,c) { c.call(self, self.$el[0]); });
+						$.each(self.callbacks.show, function(i, c) { 
+							c.call(self, self.$el[0]); 
+						});
 						self.callbacks.show = [];
 					};
 					
@@ -304,12 +306,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						// get some other settings related to building the tooltip
 						var animation = 'tooltipster-' + self.options.animation,
 							animationSpeed = '-webkit-transition-duration: '+ self.options.speed +'ms; -webkit-animation-duration: '+ self.options.speed +'ms; -moz-transition-duration: '+ self.options.speed +'ms; -moz-animation-duration: '+ self.options.speed +'ms; -o-transition-duration: '+ self.options.speed +'ms; -o-animation-duration: '+ self.options.speed +'ms; -ms-transition-duration: '+ self.options.speed +'ms; -ms-animation-duration: '+ self.options.speed +'ms; transition-duration: '+ self.options.speed +'ms; animation-duration: '+ self.options.speed +'ms;',
-							fixedWidth = self.options.fixedWidth > 0 ? 'width:'+ Math.round(self.options.fixedWidth) +'px;' : '',
-							maxWidth = self.options.maxWidth > 0 ? 'max-width:'+ Math.round(self.options.maxWidth) +'px;' : '',
+							minWidth = self.options.minWidth ? 'min-width:'+ Math.round(self.options.minWidth) +'px;' : '',
+							maxWidth = self.options.maxWidth ? 'max-width:'+ Math.round(self.options.maxWidth) +'px;' : '',
 							pointerEvents = self.options.interactive ? 'pointer-events: auto;' : '';
 						
 						// build the base of our tooltip
-						self.$tooltip = $('<div class="tooltipster-base '+ self.options.theme +'" style="'+ fixedWidth +' '+ maxWidth +' '+ pointerEvents +' '+ animationSpeed +'"><div class="tooltipster-content"></div></div>');
+						self.$tooltip = $('<div class="tooltipster-base '+ self.options.theme +'" style="'+ minWidth +' '+ maxWidth +' '+ pointerEvents +' '+ animationSpeed +'"><div class="tooltipster-content"></div></div>');
 						
 						// only add the animation class if the user has a browser that supports animations
 						if (supportsTransitions()) self.$tooltip.addClass(animation);
@@ -619,7 +621,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			
 			var finishCallbacks = function() {
 				// trigger any hide method custom callbacks and reset them
-				$.each(self.callbacks.hide, function(i,c) { c.call(self, self.$el[0]); });
+				$.each(self.callbacks.hide, function(i,c) { 
+					c.call(self, self.$el[0]); 
+				});
 				self.callbacks.hide = [];
 			};
 			
@@ -810,15 +814,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						proxy.offset.top = mapOffsetTop;
 						proxy.offset.left = mapOffsetLeft;
 					}
-				}
-				
-				// hardcoding the width and removing the padding fixed an issue with the tooltip width collapsing when the window size is small
-				if(self.options.fixedWidth === 0) {
-					self.$tooltip.css({
-						'width': Math.round(tooltipInnerWidth) + 'px',
-						'padding-left': '0px',
-						'padding-right': '0px'
-					});
 				}
 				
 				// our function and global vars for positioning our tooltip
