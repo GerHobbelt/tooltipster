@@ -1,20 +1,29 @@
 $(function() {
 	
 	$('.tooltip').not('#welcome .tooltip').tooltipster({
-		offsetY: 2,
+		offsetY: 2
 	});
 	$('#welcome .tooltip').tooltipster({
 		offsetY: 2,
-		theme: 'tooltipster-white'
+		theme: 'tooltipster-light'
 	});
 	$('#demo-default').tooltipster({
-		offsetY: 2
+		//trigger: 'click'
 	});
 	$('#demo-html').tooltipster({
-		content: $('<img src="doc/images/spiderman.png" width="50" height="50" /><p style="text-align:left;"><strong>Soufflé chocolate cake powder.</strong> Applicake lollipop oat cake gingerbread.</p>'),
+		content: $(
+			'<div>' +
+				'<img src="doc/images/spiderman.png" width="50" height="50" />' +
+				'<p style="text-align:left;">' +
+					'<strong>Lorem ipsum dolor sit amet</strong>' +
+					'<br />' +
+					'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu.' +
+				'</p>' +
+			'</div>'
+		),
 		// setting a same value to minWidth and maxWidth will result in a fixed width
-		minWidth: 300,
-		maxWidth: 300,
+		minWidth: 400,
+		maxWidth: 400,
 		position: 'right'
 	});
 	$('#demo-theme').tooltipster({
@@ -26,24 +35,26 @@ $(function() {
 		updateAnimation: false,
 		functionBefore: function(origin) {
 			
-			if (origin.data('ajax') !== 'cached') {
+			var $origin = $(origin);
+			
+			if ($origin.data('ajax') !== 'cached') {
 				
 				$.jGFeed('http://ws.audioscrobbler.com/2.0/user/ce3ge/recenttracks.rss?',
 					function(feeds){
 						var content = '';
 						if(!feeds){
 							content = 'Woops - there was an error retrieving my last.fm RSS feed';
-							origin.tooltipster('content', content);
+							$origin.tooltipster('content', content);
 						}
 						else {
 							content = $('<span>I last listened to: <strong>' + feeds.entries[0].title + '</strong></span>');
-							origin
+							$origin
 								.tooltipster('content', content)
 								.data('ajax', 'cached');
 						}
 				}, 10);
 				
-				origin.data('ajax', 'cached');
+				$origin.data('ajax', 'cached');
 			}
 		},
 		functionAfter: function(origin) {
@@ -97,6 +108,9 @@ $(function() {
 	$('.tooltipster-light-preview').tooltipster({
 		theme: 'tooltipster-light'
 	});
+	$('.tooltipster-borderless-preview').tooltipster({
+		theme: 'tooltipster-borderless'
+	});
 	$('.tooltipster-punk-preview').tooltipster({
 		theme: 'tooltipster-punk'
 	});
@@ -115,6 +129,4 @@ $(function() {
 	});
 	
 	prettyPrint();
-	
-	
 });
